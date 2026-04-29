@@ -16,4 +16,4 @@ class TasksModel(Base):
     )  # type: ignore
 
     def to_read_model(self) -> TasksSchema:
-        return TasksSchema(user_id=self.id, text=self.text, owner_id=self.owner_id)
+        return TasksSchema(task_id=self.id, text=self.text, owner_id=self.owner_id)

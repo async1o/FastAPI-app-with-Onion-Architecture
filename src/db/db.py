@@ -3,6 +3,7 @@ import logging
 from sqlalchemy import inspect
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.pool import NullPool
 
 from config_db import settings
 
@@ -10,7 +11,10 @@ from config_db import settings
 logger = logging.getLogger(__name__)
 
 
-engine = create_async_engine(url=settings.get_db_ulr)
+engine = create_async_engine(
+    url=settings.get_db_ulr,
+    poolclass=NullPool if settings.MODE == "TEST" else None,
+)
 async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
 
 
@@ -24,6 +28,7 @@ class Base(DeclarativeBase):
 
 
 async def reset_tables():
+    _import_all_models()
     async with engine.begin() as eng:
         await eng.run_sync(Base.metadata.drop_all)
         await eng.run_sync(Base.metadata.create_all)

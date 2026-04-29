@@ -24,6 +24,5 @@ class UsersModel(Base):
             user_id=self.id,
             username=self.username,
             email=self.email,
-            password=self.password,
             tasks=[model.to_read_model() for model in self.tasks],
         )

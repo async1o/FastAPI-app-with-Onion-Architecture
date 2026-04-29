@@ -5,6 +5,7 @@ from sqlalchemy import select, insert, delete, update
 
 from db.db import async_session_maker
 from schemas.users import UserSchema
+from utils.exceptions import EntityNotFoundError
 
 
 class AbstractRepositories(ABC):
@@ -52,12 +53,17 @@ class SQLAlchemyRepositories(AbstractRepositories):
                 .returning(self.model)
             )  # type: ignore
             model = await session.execute(stmt)
-            model = model.scalar_one().to_read_model()
+            model = model.scalar_one_or_none()
+            if model is None:
+                raise EntityNotFoundError(self.model.__name__, entity_id)  # type: ignore
+            model = model.to_read_model()
             await session.commit()
             return model
 
     async def delete_one(self, entity_id: int):
         async with async_session_maker() as session:
             stmt = delete(self.model).where(self.model.id == entity_id)  # type: ignore
-            await session.execute(stmt)
+            result = await session.execute(stmt)
+            if result.rowcount == 0:
+                raise EntityNotFoundError(self.model.__name__, entity_id)  # type: ignore
             await session.commit()

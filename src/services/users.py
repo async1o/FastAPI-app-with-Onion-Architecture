@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List
 
 from utils.repositories import AbstractRepositories
 from schemas.users import UserAddSchema, UserSchema
@@ -8,7 +8,7 @@ class UserServices:
     def __init__(self, users_repo: type(AbstractRepositories)):  # type: ignore
         self.users_repo: type(AbstractRepositories) = users_repo()  # type: ignore
 
-    async def get_all_users(self) -> UserSchema:
+    async def get_all_users(self) -> List[UserSchema]:
         res = await self.users_repo.find_all()
         return res
 
