@@ -6,13 +6,6 @@ import pytest
 
 from fastapi.testclient import TestClient
 
-os.environ["MODE"] = "TEST"
-os.environ["DB_HOST"] = "localhost"
-os.environ["DB_PORT"] = "5432"
-os.environ["DB_USER"] = "postgres"
-os.environ["DB_NAME"] = "test_gh_actions_db"
-os.environ["DB_PASS"] = "125364"
-
 from main import app
 from db.db import reset_tables
 from services.users import UserServices
