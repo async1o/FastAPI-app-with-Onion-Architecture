@@ -1,18 +1,20 @@
-import os
-import sys
 import logging
+import asyncio
 
-from fastapi import FastAPI
 import uvicorn
+from fastapi import FastAPI
 
-sys.path.insert(1, os.path.join(sys.path[0], '..'))
+from routers import router
+from db.db import create_tables_if_not_exists
 
-from src.api.main_router import router
 
 app = FastAPI()
 app.include_router(router)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
-    uvicorn.run('main:app', host='0.0.0.0', port=8000, reload=True)
+
+    asyncio.run(create_tables_if_not_exists())
+
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

@@ -1,7 +1,8 @@
 from typing import List
 from pydantic import BaseModel
 
-from src.schemas.tasks import TasksSchema
+from schemas.tasks import TasksSchema
+
 
 class UserSchema(BaseModel):
     user_id: int
@@ -10,8 +11,9 @@ class UserSchema(BaseModel):
     password: str
     tasks: List[TasksSchema]
 
-    class Config():
+    class Config:
         from_attributes = True
+
 
 class UserAddSchema(BaseModel):
     username: str
