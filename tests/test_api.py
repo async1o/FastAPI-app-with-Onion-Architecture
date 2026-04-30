@@ -7,7 +7,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from main import app
-from db.db import reset_tables
+from db.db import reset_tables, create_db
 from services.users import UserServices
 from config_db import settings
 from repositories.users import UserRepositories
@@ -20,8 +20,11 @@ def setup_db():
     assert settings.MODE == "TEST"
 
     async def _setup():
+        await create_db()
         await reset_tables()
+
         user = UserAddSchema(username="Bot", email="Bot@email.ru", password="12345")
+        
         await UserServices(UserRepositories).add_user(user)
 
     asyncio.run(_setup())

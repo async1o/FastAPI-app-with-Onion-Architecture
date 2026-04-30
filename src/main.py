@@ -15,6 +15,6 @@ app.include_router(router)
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
 
-    create_db()
+    asyncio.run(create_db())
 
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

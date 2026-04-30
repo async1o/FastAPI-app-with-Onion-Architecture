@@ -60,7 +60,7 @@ async def create_tables():
     logger.info("Tables created")
 
     
-def create_db():
+async def create_db():
     url = settings.get_db_ulr.replace('asyncpg', 'psycopg2')
     """Создать базу, если она ещё не существует."""
 
@@ -68,7 +68,7 @@ def create_db():
         create_database(url)
         logger.info('Databases created on startup (auto)')
 
-        asyncio.run(create_tables_if_not_exists())
+        await create_tables_if_not_exists()
     else:
         logger.info("Databases already exist, skipping creation")
 
