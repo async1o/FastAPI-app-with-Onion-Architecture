@@ -1,0 +1,18 @@
+FROM python:3.13-slim
+
+WORKDIR /app
+
+# Устанавливаем uv
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
+# Копируем манифест зависимостей
+COPY pyproject.toml uv.lock ./
+
+RUN apt update && apt install -y --no-install-recommends build-essential libpq-dev
+
+RUN uv sync --frozen --no-install-project
+
+# Копируем код бота
+COPY src/ ./src/
+
+CMD ["uv", "run", "python", "src/main.py"]
