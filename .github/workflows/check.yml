@@ -1,7 +1,8 @@
 name: Check
 on:
   push:
-    - "main"
+    braches:
+      - "main"
 jobs:
   lint:
     runs-on: ubuntu-latest
