@@ -58,14 +58,14 @@ async def create_tables():
         await eng.run_sync(Base.metadata.create_all)
     logger.info("Tables created")
 
-    
+
 async def create_db():
-    url = settings.get_db_ulr.replace('+asyncpg', '')
+    url = settings.get_db_ulr.replace("+asyncpg", "")
     """Создать базу, если она ещё не существует."""
 
     if not database_exists(url):
         create_database(url)
-        logger.info('Databases created on startup (auto)')
+        logger.info("Databases created on startup (auto)")
 
         await create_tables_if_not_exists()
     else:

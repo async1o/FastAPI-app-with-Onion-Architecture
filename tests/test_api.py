@@ -1,5 +1,4 @@
 import asyncio
-import os
 
 
 import pytest
@@ -24,7 +23,7 @@ def setup_db():
         await reset_tables()
 
         user = UserAddSchema(username="Bot", email="Bot@email.ru", password="12345")
-        
+
         await UserServices(UserRepositories).add_user(user)
 
     asyncio.run(_setup())

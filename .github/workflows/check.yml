@@ -1,0 +1,17 @@
+name: Check
+on: push
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      name: Checkout
+      uses: actions/checkout@v6
+      name: Install the latest version of uv
+      uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b
+      name: Install deps for psycopg2
+      run:  apt update && apt install -y --no-install-recommends build-essential libpq-dev
+      name: Install deps
+      run:  uv sync --frozen --no-install-project
+      name: Lint:
+      run: uv run ruff check --fix && uv run ruff format
+      
