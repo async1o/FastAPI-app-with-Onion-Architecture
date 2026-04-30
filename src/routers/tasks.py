@@ -24,7 +24,7 @@ async def add_task(data: TasksAddSchema) -> int:
         task_id = await TasksServices(TasksRepositories).add_task(data)
         return task_id
     except IntegrityError as exc:
-        raise HTTPException(status_code=400, detail="Inval task payloa") from exc
+        raise HTTPException(status_code=400, detail="task payloa") from exc
 
 
 @router.put("", response_model=TasksSchema)
