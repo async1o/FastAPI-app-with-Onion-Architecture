@@ -12,6 +12,5 @@ jobs:
       run:  apt update && apt install -y --no-install-recommends build-essential libpq-dev
       name: Install deps
       run:  uv sync --frozen --no-install-project
-      name: Lint:
+      name: Lint
       run: uv run ruff check --fix && uv run ruff format
-      
