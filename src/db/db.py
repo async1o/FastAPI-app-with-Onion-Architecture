@@ -1,4 +1,5 @@
 import logging
+import asyncio
 
 from sqlalchemy import inspect
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
@@ -58,6 +59,19 @@ async def create_tables():
         await eng.run_sync(Base.metadata.create_all)
     logger.info("Tables created")
 
+    
+def create_db():
+    url = settings.get_db_ulr.replace('asyncpg', 'psycopg2')
+    """Создать базу, если она ещё не существует."""
+
+    if not database_exists(url):
+        create_database(url)
+        logger.info('Databases created on startup (auto)')
+
+        asyncio.run(create_tables_if_not_exists())
+    else:
+        logger.info("Databases already exist, skipping creation")
+
 
 async def create_tables_if_not_exists():
     """Создать таблицы, если они ещё не существуют."""
@@ -68,13 +82,3 @@ async def create_tables_if_not_exists():
         logger.info("Tables created on startup (auto)")
     else:
         logger.info("Tables already exist, skipping creation")
-
-async def create_db():
-
-    if not database_exists(settings.get_db_ulr):
-        create_database(settings.get_db_ulr)
-        logger.info('Databases created on startup (auto)')
-        
-        await create_tables_if_not_exists()
-    else:
-        logger.info("Databases already exist, skipping creation")
