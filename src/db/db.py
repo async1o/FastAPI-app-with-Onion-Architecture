@@ -4,6 +4,7 @@ from sqlalchemy import inspect
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.pool import NullPool
+from sqlalchemy_utils import create_database, database_exists
 
 from config_db import settings
 
@@ -67,3 +68,13 @@ async def create_tables_if_not_exists():
         logger.info("Tables created on startup (auto)")
     else:
         logger.info("Tables already exist, skipping creation")
+
+async def create_db():
+
+    if not database_exists(settings.get_db_ulr):
+        create_database(settings.get_db_ulr)
+        logger.info('Databases created on startup (auto)')
+        
+        await create_tables_if_not_exists()
+    else:
+        logger.info("Databases already exist, skipping creation")
