@@ -22,5 +22,9 @@ jobs:
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b
       - name: Install deps
         run:  uv sync --frozen --no-install-project
+      - name: Setup DB
+        uses: harmon758/postgresql-action@v1
+        with:
+          postgresql version: '16-alpine'
       - name: Test
         run: uv run pytest -v
