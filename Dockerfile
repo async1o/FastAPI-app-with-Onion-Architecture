@@ -7,6 +7,7 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 # Копируем манифест зависимостей
 COPY pyproject.toml uv.lock ./
+
 RUN uv sync --frozen --no-install-project
 
 # Копируем код бота

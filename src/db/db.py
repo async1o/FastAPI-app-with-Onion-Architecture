@@ -61,7 +61,7 @@ async def create_tables():
 
     
 async def create_db():
-    url = settings.get_db_ulr.replace('asyncpg', 'psycopg2')
+    url = settings.get_db_ulr.replace('+asyncpg', '')
     """Создать базу, если она ещё не существует."""
 
     if not database_exists(url):
