@@ -17,6 +17,12 @@ async def get_all_tasks() -> List[TasksSchema]:
     res = await TasksServices(TasksRepositories).get_all_tasks()
     return res
 
+@router.get("/{task_id}", response_model=List[TasksSchema])
+async def get_current_task(task_id: int):
+    res = await TasksServices(TasksRepositories).get_current_task(task_id)
+    return res
+
+
 
 @router.post("", response_model=int)
 async def add_task(data: TasksAddSchema) -> int:

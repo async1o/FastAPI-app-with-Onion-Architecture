@@ -11,6 +11,10 @@ class TasksServices:
     async def get_all_tasks(self) -> List[TasksSchema]:
         res = await self.tasks_repo.find_all()
         return res
+    
+    async def get_current_task(self, task_id) -> TasksSchema:
+        res = await self.tasks_repo.find_currency(task_id)
+        return res
 
     async def add_task(self, data: TasksAddSchema) -> TasksSchema:
         data_dict = data.model_dump()

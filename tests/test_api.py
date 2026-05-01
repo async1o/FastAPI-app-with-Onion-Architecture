@@ -77,12 +77,12 @@ class TestUser:
 @pytest.mark.usefixtures("client")
 class TestTasks:
     @pytest.mark.asyncio
-    async def test_get_all_users(self, client):
+    async def test_get_all_tasks(self, client):
         response = client.get("/tasks")
         assert response.status_code == 200
 
     @pytest.mark.asyncio
-    async def test_add_user(self, client):
+    async def test_add_task(self, client):
         user_json = {
             "username": "TaskOwner",
             "email": "taskowner@email.ru",
@@ -96,7 +96,7 @@ class TestTasks:
         assert response.status_code == 200
 
     @pytest.mark.asyncio
-    async def test_update_user(self, client):
+    async def test_update_task(self, client):
         user_json = {
             "username": "TaskOwner2",
             "email": "taskowner2@email.ru",
@@ -113,7 +113,7 @@ class TestTasks:
         assert response.status_code == 200
 
     @pytest.mark.asyncio
-    async def test_delete_user(self, client):
+    async def test_delete_task(self, client):
         owner_id = client.post(
             "/users",
             json={

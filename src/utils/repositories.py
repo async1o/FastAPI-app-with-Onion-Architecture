@@ -12,6 +12,10 @@ class AbstractRepositories(ABC):
     @abstractmethod
     async def find_all(self):
         raise NotImplementedError
+    
+    @abstractmethod
+    async def find_currency(self):
+        raise NotImplementedError
 
     @abstractmethod
     async def add_one(self, data: dict):
@@ -29,12 +33,20 @@ class AbstractRepositories(ABC):
 class SQLAlchemyRepositories(AbstractRepositories):
     model = None
 
-    async def find_all(self) -> List[UserSchema]:
+    async def find_all(self):
         async with async_session_maker() as session:
             stmt = select(self.model)  # type: ignore
             models = await session.execute(stmt)
             models = [row[0].to_read_model() for row in models.all()]
             return models
+    
+    async def find_currency(self, entity_id: int):
+        async with async_session_maker() as session:
+            stmt = select(self.model).where(self.model.id == entity_id)
+            model = await session.execute(stmt)
+            model = [row[0].to_read_model() for row in model.all()]
+        return model
+
 
     async def add_one(self, data: dict):
         async with async_session_maker() as session:
